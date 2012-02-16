@@ -8,11 +8,13 @@
 
     ;; set lupin screen
     (copy-face 'mode-line 'original-modeline-face)
+    (copy-face 'mode-line-buffer-id 'original-modeline-buffer-id-face)
     (copy-face 'minibuffer-prompt 'original-minibuffer-face)
     (copy-face 'default 'original-default-face)
 
     (switch-to-buffer lupin-buf)
     (set-face-attribute 'mode-line nil :foreground "black" :background "black" :box nil)
+    (set-face-attribute 'mode-line-buffer-id nil :foreground "black" :background "black" :box nil)
     (set-face-attribute 'default (selected-frame) :foreground "white" :background "black" :height font-height)
     (set-face-attribute 'minibuffer-prompt nil :foreground "black")
 
@@ -31,6 +33,7 @@
     (set-frame-font font)
     (set-face-attribute 'default nil :height original-font-height)
     (copy-face 'original-modeline-face 'mode-line)
+    (copy-face 'original-modeline-buffer-id-face 'mode-line-buffer-id)
     (copy-face 'original-minibuffer-face 'minibuffer-prompt)
     (copy-face 'original-default-face 'default)))
 
