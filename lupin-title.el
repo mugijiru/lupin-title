@@ -3,6 +3,7 @@
   (let ((original-buffer (current-buffer))
         (original-font-height (face-attribute 'default :height))
         (font-height 360)
+        (font (frame-parameter nil 'font))
         (lupin-buf (get-buffer-create "*Lupin*")))
 
     ;; set lupin screen
@@ -27,6 +28,7 @@
     ;; revert
     (modify-frame-parameters (selected-frame) `((cursor-type . box)
                                                 (vertical-scroll-bars . t)))
+    (set-frame-font font)
     (set-face-attribute 'default nil :height original-font-height)
     (copy-face 'original-modeline-face 'mode-line)
     (copy-face 'original-minibuffer-face 'minibuffer-prompt)
