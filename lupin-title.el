@@ -1,3 +1,4 @@
+
 (defun lupin-title (title)
   (interactive "sタイトル: ")
   (let ((original-buffer (current-buffer))
@@ -62,7 +63,9 @@
   (concat (lupin-title-dir) "lupin2.wav"))
 
 (defun lupin-title-play-sound (sound-file-path)
-  (apply 'start-process `("mplayer" nil "mplayer" "-vc" "null" "-vo" "null" "-quiet" ,sound-file-path ">" "/dev/null")))
+  (condition-case nil
+      (apply 'start-process `("mplayer" nil "mplayer" ,sound-file-path ">" "/dev/null"))
+    (error nil)))
 
 (defun lupin-title-insert-line ()
   (let ((line (/ (/ (display-pixel-height) 2) (frame-char-height))) value)
