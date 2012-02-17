@@ -3,6 +3,8 @@
   (let ((original-buffer (current-buffer))
         (original-font-height (face-attribute 'default :height))
         (original-fill-column fill-column)
+        (original-left-fringe (frame-parameter nil 'left-fringe))
+        (original-right-fringe (frame-parameter nil 'left-fringe))
         (font-height 600)
         (font (frame-parameter nil 'font))
         (lupin-buf (get-buffer-create "*Lupin*")))
@@ -15,15 +17,17 @@
 
     ;; change parameters
     (switch-to-buffer lupin-buf)
+    (delete-other-windows)
+    (modify-frame-parameters (selected-frame) `((cursor-type . nil)
+                                                (left-fringe . 0)
+                                                (right-fringe . 0)
+                                                (vertical-scroll-bars . nil)))
     (set-face-attribute 'mode-line nil :foreground "black" :background "black" :box nil)
     (set-face-attribute 'mode-line-buffer-id nil :foreground "black" :background "black" :box nil)
-    (set-face-attribute 'default (selected-frame) :foreground "white" :background "black" :height font-height)
+    (set-face-attribute 'default nil :foreground "white" :background "black" :height font-height)
     (set-face-attribute 'minibuffer-prompt nil :foreground "black")
-
-    (modify-frame-parameters (selected-frame) `((cursor-type . nil)
-                                                (vertical-scroll-bars . nil)))
     (setq fill-column (/ (display-pixel-width) (frame-char-width)))
-    (delete-other-windows)
+
     (dolist (char (split-string title "" t))
       (lupin-title-insert-text-with-sound char (lupin-title-audio1)))
     (lupin-title-insert-text-with-sound title (lupin-title-audio2))
@@ -32,6 +36,8 @@
 
     ;; revert
     (modify-frame-parameters (selected-frame) `((cursor-type . box)
+                                                (left-fringe . original-left-fringe)
+                                                (right-fringe . original-right-fringe)
                                                 (vertical-scroll-bars . t)))
     (set-frame-font font)
     (setq fill-column original-fill-column)
