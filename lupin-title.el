@@ -2,7 +2,8 @@
   (interactive "sタイトル: ")
   (let ((original-buffer (current-buffer))
         (original-font-height (face-attribute 'default :height))
-        (font-height 360)
+        (original-fill-column fill-column)
+        (font-height 600)
         (font (frame-parameter nil 'font))
         (lupin-buf (get-buffer-create "*Lupin*")))
 
@@ -12,6 +13,7 @@
     (copy-face 'minibuffer-prompt 'original-minibuffer-face)
     (copy-face 'default 'original-default-face)
 
+    ;; change parameters
     (switch-to-buffer lupin-buf)
     (set-face-attribute 'mode-line nil :foreground "black" :background "black" :box nil)
     (set-face-attribute 'mode-line-buffer-id nil :foreground "black" :background "black" :box nil)
@@ -20,6 +22,7 @@
 
     (modify-frame-parameters (selected-frame) `((cursor-type . nil)
                                                 (vertical-scroll-bars . nil)))
+    (setq fill-column (/ (display-pixel-width) (frame-char-width)))
     (delete-other-windows)
     (dolist (char (split-string title "" t))
       (lupin-title-insert-text-with-sound char (lupin-title-audio1)))
@@ -31,6 +34,7 @@
     (modify-frame-parameters (selected-frame) `((cursor-type . box)
                                                 (vertical-scroll-bars . t)))
     (set-frame-font font)
+    (setq fill-column original-fill-column)
     (set-face-attribute 'default nil :height original-font-height)
     (copy-face 'original-modeline-face 'mode-line)
     (copy-face 'original-modeline-buffer-id-face 'mode-line-buffer-id)
